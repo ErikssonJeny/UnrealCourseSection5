@@ -12,8 +12,6 @@ UCLASS()
 class BATTLETANKS_API ABattleTanksGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
-	
-	
+
 	
 };
