@@ -2,6 +2,8 @@
 
 #include "BattleTanks.h"
 #include "../Public/TankBarrel.h"
+#include "../Public/TankTurret.h"
+#include "../Public/TankAimingComponent.h"
 #include "Tank.h"
 
 
@@ -19,11 +21,15 @@ void ATank::SetBarrelReference(UTankBarrel* assignedBarrel)
 	tankAimingComponent->SetBarrelReference(assignedBarrel);
 }
 
+void ATank::SetTurretReference(UTankTurret* assignedTurret)
+{
+	tankAimingComponent->SetTurretReference(assignedTurret);
+}
+
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
-	Super::BeginPlay();
-	
+	Super::BeginPlay();	
 }
 
 // Called to bind functionality to input
@@ -31,6 +37,12 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void ATank::Fire()
+{
+	UE_LOG(LogClass, Error, TEXT("Fire."));
+	return;
 }
 
 void ATank::AimAt(FVector hitLocation)

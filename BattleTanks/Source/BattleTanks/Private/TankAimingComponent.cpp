@@ -2,6 +2,7 @@
 
 #include "BattleTanks.h"
 #include "../Public/TankBarrel.h"
+#include "../Public/TankTurret.h"
 #include "../Public/TankAimingComponent.h"
 
 
@@ -38,29 +39,40 @@ void UTankAimingComponent::SetBarrelReference(UTankBarrel* assignedBarrel)
 	barrel = assignedBarrel;
 }
 
+void UTankAimingComponent::SetTurretReference(UTankTurret* assignedTurret)
+{
+	turret = assignedTurret;
+}
+
 
 void UTankAimingComponent::AimAt(FVector hitLocation, float launchSpeed)
 {
 	if (!barrel)
+	{
+		UE_LOG(LogClass, Error, TEXT("No barrel."));
 		return;
+	}
+		
+
+	if (!turret)
+	{
+		UE_LOG(LogClass, Error, TEXT("No turret."));
+		return;
+	}
 
 	FVector outLaunchVelocity; 
 	FVector startLocation = barrel->GetSocketLocation(FName("launchLocation"));
 	FVector aimDirection;
 
-	UE_LOG(LogClass, Warning, TEXT("%s aiming at: %s."), *(GetOwner()->GetName()), *(hitLocation.ToString()));
 
-	if (UGameplayStatics::SuggestProjectileVelocity(this, outLaunchVelocity, startLocation, hitLocation, launchSpeed, ESuggestProjVelocityTraceOption::DoNotTrace))
+	if (UGameplayStatics::SuggestProjectileVelocity(this, outLaunchVelocity, startLocation, hitLocation, launchSpeed, false, 0.0f, 0.0f, ESuggestProjVelocityTraceOption::DoNotTrace))
 	{
 		aimDirection = outLaunchVelocity.GetSafeNormal();
 		MoveBarrel(aimDirection);
 
-		UE_LOG(LogClass, Warning, TEXT("%s aiming at: %s."), *(GetOwner()->GetName()), *(aimDirection.ToString()));
-
 	}
 	else
 	{
-		UE_LOG(LogClass, Warning, TEXT("No firing solution."));
 	}
 
 	return;
@@ -72,8 +84,8 @@ void UTankAimingComponent::MoveBarrel(FVector aimDirection)
 	FRotator aimRotation = aimDirection.Rotation();
 	FRotator deltaRotation = aimRotation - barrelRotation;
 
-	UE_LOG(LogClass, Warning, TEXT("Aiming rotation: %s."), *(aimRotation.ToString()));
-
-	barrel->Elevate(5.5f);
+	barrel->Elevate(deltaRotation.Pitch);
+	turret->Rotate(deltaRotation.Yaw);
 }
+
 

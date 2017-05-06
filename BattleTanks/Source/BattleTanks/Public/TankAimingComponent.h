@@ -5,8 +5,9 @@
 #include "Components/ActorComponent.h"
 #include "TankAimingComponent.generated.h"
 
-//Forward declaration
+//Forward declarations
 class UTankBarrel;
+class UTankTurret;
 
 //Holds parameters & properties for barrels & turrets
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -18,6 +19,7 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 	void SetBarrelReference(UTankBarrel*);
+	void SetTurretReference(UTankTurret*);
 
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -31,7 +33,9 @@ protected:
 private:
 
 	UTankBarrel* barrel = NULL;
+	UTankTurret* turret = NULL;
 
 	void MoveBarrel(FVector);
+	void MoveTurret(FVector);
 		
 };

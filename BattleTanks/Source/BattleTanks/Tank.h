@@ -2,11 +2,13 @@
 
 #pragma once
 
-#include "../Public/TankAimingComponent.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
-class UTankBarrel; //Forward declaration
+//Forward declarations
+class UTankBarrel;
+class UTankTurret;
+class UTankAimingComponent;
 
 UCLASS()
 class BATTLETANKS_API ATank : public APawn
@@ -19,8 +21,17 @@ public:
 	void AimAt(FVector);
 
 	//Allows the blueprint to call this method
+	UFUNCTION(BlueprintCallable, Category = Input)
+		void Fire();
+
+	//Allows the blueprint to call this method
 	UFUNCTION(BlueprintCallable, Category = Setup)
 		void SetBarrelReference(UTankBarrel* assignedBarrel);
+
+	//Allows the blueprint to call this method
+	UFUNCTION(BlueprintCallable, Category = Setup)
+		void SetTurretReference(UTankTurret* assignedTurret);
+
 
 protected:
 
