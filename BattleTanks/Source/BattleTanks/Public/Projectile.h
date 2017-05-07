@@ -13,14 +13,17 @@ class BATTLETANKS_API AProjectile : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AProjectile();
+	void LaunchProjectile(float);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+private:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	UProjectileMovementComponent* projectileMovementComponent = NULL;
+
 
 	
 	

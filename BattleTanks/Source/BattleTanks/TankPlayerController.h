@@ -18,13 +18,13 @@ class BATTLETANKS_API ATankPlayerController : public APlayerController
 	
 public:
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 		float crosshairX = 0.5;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 		float crosshairY = 0.33333;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 		float range = 10.0;
 
 	ATank* GetControlledTank() const;

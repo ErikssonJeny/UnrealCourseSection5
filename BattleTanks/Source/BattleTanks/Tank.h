@@ -9,6 +9,7 @@
 class UTankBarrel;
 class UTankTurret;
 class UTankAimingComponent;
+class AProjectile;
 
 UCLASS()
 class BATTLETANKS_API ATank : public APawn
@@ -42,12 +43,26 @@ protected:
 
 private:	
 
+	/* Blueprint Variables*/
+
+	UPROPERTY(EditAnywhere, Category = Setup)
+		TSubclassOf<AProjectile> projectileBP = NULL;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+		float launchSpeed = 2500;
+
+	//Gun reload time in seconds
+	UPROPERTY(EditAnywhere, Category = Firing)
+		float reloadTime = 3;
+
+	/* Non-Blueprint Variables*/
+
+	UTankBarrel* barrel = NULL;
+	double lastFireTime = 0;
+
+	/* Functions */
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	UPROPERTY(EditAnywhere, Category = Firing)
-		float launchSpeed = 100000;
-
-	
 	
 };
