@@ -18,6 +18,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Input)
 		void SetThrottle(float throttle);
 
+	//In newtons (N)
+	UPROPERTY(EditDefaultsOnly)
+		float maxDrivingForce = 400000; //10m/s^2
+
 	
 	
 };

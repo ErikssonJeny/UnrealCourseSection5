@@ -5,6 +5,7 @@
 #include "../Public/TankBarrel.h"
 #include "../Public/TankTurret.h"
 #include "../Public/TankAimingComponent.h"
+#include "../Public/TankMovementComponent.h"
 #include "Tank.h"
 
 
@@ -46,8 +47,6 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATank::Fire()
 {
-	UE_LOG(LogClass, Error, TEXT("Fire."));
-
 	bool isReloaded = (FPlatformTime::Seconds() - lastFireTime) > reloadTime;
 
 	if(barrel && isReloaded)

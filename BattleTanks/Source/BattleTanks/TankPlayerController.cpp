@@ -9,15 +9,6 @@ void ATankPlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	ATank* controlledTank = GetControlledTank();
-	if (!controlledTank)
-	{
-		UE_LOG(LogClass, Error, TEXT("TankPlayerController not possesing a tank."));
-	}
-	else
-	{
-		UE_LOG(LogClass, Warning, TEXT("TankPlayerController is possesing: %s."), *(controlledTank->GetName()));
-	}
-
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -74,7 +65,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector direction, FVector 
 	endLocation = startLocation + (direction * range * 100000);
 
 	FCollisionQueryParams CollisionParams;
-	CollisionParams.AddIgnoredActor(GetControlledPawn());
+	CollisionParams.AddIgnoredActor(GetPawn());
 
 	if (GetWorld()->LineTraceSingleByChannel(objectHit, startLocation, endLocation, ECollisionChannel::ECC_Visibility, CollisionParams))
 	{
