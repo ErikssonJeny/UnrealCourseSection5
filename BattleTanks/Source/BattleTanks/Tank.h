@@ -23,24 +23,15 @@ public:
 	void AimAt(FVector);
 
 	//Allows the blueprint to call this method
-	UFUNCTION(BlueprintCallable, Category = Input)
+	UFUNCTION(BlueprintCallable, Category = "Input")
 		void Fire();
-
-	//Allows the blueprint to call this method
-	UFUNCTION(BlueprintCallable, Category = Setup)
-		void SetBarrelReference(UTankBarrel* assignedBarrel);
-
-	//Allows the blueprint to call this method
-	UFUNCTION(BlueprintCallable, Category = Setup)
-		void SetTurretReference(UTankTurret* assignedTurret);
-
 
 protected:
 
-	UPROPERTY(BlueprintReadOnly, Category = Setup)
+	UPROPERTY(BlueprintReadOnly, Category = "Setup")
 		UTankMovementComponent* tankMovementComponent = NULL;
 
-	UPROPERTY(BlueprintReadOnly, Category = Setup)
+	UPROPERTY(BlueprintReadOnly, Category = "Setup")
 		UTankAimingComponent* tankAimingComponent = NULL;
 
 	// Called when the game starts or when spawned
@@ -50,14 +41,14 @@ private:
 
 	/* Blueprint Variables*/
 
-	UPROPERTY(EditAnywhere, Category = Setup)
+	UPROPERTY(EditAnywhere, Category = "Setup")
 		TSubclassOf<AProjectile> projectileBP = NULL;
 
-	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		float launchSpeed = 2500;
 
 	//Gun reload time in seconds
-	UPROPERTY(EditAnywhere, Category = Firing)
+	UPROPERTY(EditAnywhere, Category = "Firing")
 		float reloadTime = 3;
 
 	/* Non-Blueprint Variables*/

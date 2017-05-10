@@ -27,7 +27,6 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 		float range = 10.0;
 
-	ATank* GetControlledTank() const;
 	void BeginPlay() override;
 	void Tick(float DeltaTime) override;
 
@@ -38,5 +37,13 @@ public:
 	void AimTowardsCrosshair();
 	bool GetSightRayHitLocation(FVector&) const;
 	bool GetLookVectorHitLocation(FVector, FVector&) const;
+
+protected:
+
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+		ATank* GetControlledTank() const;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+		void FindAimingComponent(UTankAimingComponent* aimingComponent);
 	
 };

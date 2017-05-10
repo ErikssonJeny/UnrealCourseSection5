@@ -23,6 +23,9 @@ private:
 	ATank* controlledTank = NULL;
 	ATank* playerTank = NULL;
 
+	UPROPERTY(EditDefaultsOnly, Category = Pathfinding)
+		float acceptanceRadius = 50.f;
+
 	void BeginPlay() override;
 	void Tick(float deltaTime) override;
 	

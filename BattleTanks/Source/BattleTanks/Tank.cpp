@@ -14,20 +14,6 @@ ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-
-	tankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
-
-}
-
-void ATank::SetBarrelReference(UTankBarrel* assignedBarrel)
-{
-	tankAimingComponent->SetBarrelReference(assignedBarrel);
-	barrel = assignedBarrel;
-}
-
-void ATank::SetTurretReference(UTankTurret* assignedTurret)
-{
-	tankAimingComponent->SetTurretReference(assignedTurret);
 }
 
 // Called when the game starts or when spawned
@@ -35,6 +21,7 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();	
 
+	tankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 	lastFireTime = FPlatformTime::Seconds();
 }
 
@@ -49,7 +36,10 @@ void ATank::Fire()
 {
 	bool isReloaded = (FPlatformTime::Seconds() - lastFireTime) > reloadTime;
 
-	if(barrel && isReloaded)
+	if (!ensure(barrel))
+		return;
+
+	if(isReloaded)
 	{
 		AProjectile* projectile = GetWorld()->SpawnActor<AProjectile>(projectileBP, barrel->GetSocketLocation(FName("launchLocation")), barrel->GetSocketRotation(FName("launchLocation")));
 		projectile->LaunchProjectile(launchSpeed);
@@ -59,6 +49,9 @@ void ATank::Fire()
 
 void ATank::AimAt(FVector hitLocation)
 {
+	if (!ensure(tankAimingComponent))
+		return;
+
 	tankAimingComponent->AimAt(hitLocation, launchSpeed);
 }
 

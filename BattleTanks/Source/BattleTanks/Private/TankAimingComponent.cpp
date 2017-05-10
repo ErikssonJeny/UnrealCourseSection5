@@ -34,27 +34,22 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	// ...
 }
 
-void UTankAimingComponent::SetBarrelReference(UTankBarrel* assignedBarrel)
+void UTankAimingComponent::Initialise(UTankBarrel* setBarrel, UTankTurret* setTurret)
 {
-	barrel = assignedBarrel;
+	barrel = setBarrel;
+	turret = setTurret;
 }
-
-void UTankAimingComponent::SetTurretReference(UTankTurret* assignedTurret)
-{
-	turret = assignedTurret;
-}
-
 
 void UTankAimingComponent::AimAt(FVector hitLocation, float launchSpeed)
 {
-	if (!barrel)
+	if (!ensure(barrel))
 	{
 		UE_LOG(LogClass, Error, TEXT("No barrel."));
 		return;
 	}
 		
 
-	if (!turret)
+	if (!ensure(turret))
 	{
 		UE_LOG(LogClass, Error, TEXT("No turret."));
 		return;
@@ -69,7 +64,6 @@ void UTankAimingComponent::AimAt(FVector hitLocation, float launchSpeed)
 	{
 		aimDirection = outLaunchVelocity.GetSafeNormal();
 		MoveBarrel(aimDirection);
-
 	}
 	else
 	{
@@ -80,6 +74,9 @@ void UTankAimingComponent::AimAt(FVector hitLocation, float launchSpeed)
 
 void UTankAimingComponent::MoveBarrel(FVector aimDirection)
 {
+	if (!ensure (barrel || turret))
+		return;
+
 	FRotator barrelRotation = barrel->GetForwardVector().Rotation();
 	FRotator aimRotation = aimDirection.Rotation();
 	FRotator deltaRotation = aimRotation - barrelRotation;
