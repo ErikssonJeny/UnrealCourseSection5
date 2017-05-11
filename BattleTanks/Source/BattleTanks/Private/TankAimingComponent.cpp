@@ -3,6 +3,7 @@
 #include "BattleTanks.h"
 #include "../Public/TankBarrel.h"
 #include "../Public/TankTurret.h"
+#include "../Public/Projectile.h"
 #include "../Public/TankAimingComponent.h"
 
 
@@ -22,6 +23,7 @@ void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	lastFireTime = FPlatformTime::Seconds();
 	// ...
 	
 }
@@ -40,7 +42,28 @@ void UTankAimingComponent::Initialise(UTankBarrel* setBarrel, UTankTurret* setTu
 	turret = setTurret;
 }
 
-void UTankAimingComponent::AimAt(FVector hitLocation, float launchSpeed)
+// Called to bind functionality to input
+void UTankAimingComponent::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+
+}
+
+void UTankAimingComponent::Fire()
+{
+	bool isReloaded = (FPlatformTime::Seconds() - lastFireTime) > reloadTime;
+
+	if (!ensure(barrel))
+		return;
+
+	if (isReloaded)
+	{
+		AProjectile* projectile = GetWorld()->SpawnActor<AProjectile>(projectileBP, barrel->GetSocketLocation(FName("launchLocation")), barrel->GetSocketRotation(FName("launchLocation")));
+		projectile->LaunchProjectile(launchSpeed);
+		lastFireTime = FPlatformTime::Seconds();
+	}
+}
+
+void UTankAimingComponent::AimAt(FVector hitLocation)
 {
 	if (!ensure(barrel))
 	{

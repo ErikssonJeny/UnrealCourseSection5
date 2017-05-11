@@ -7,6 +7,7 @@
 
 //Forward declarations
 class ATank;
+class UTankAimingComponent;
 
 /**
  * 
@@ -20,7 +21,6 @@ public:
 
 private:
 
-	ATank* controlledTank = NULL;
 	ATank* playerTank = NULL;
 
 	UPROPERTY(EditDefaultsOnly, Category = Pathfinding)
@@ -28,5 +28,6 @@ private:
 
 	void BeginPlay() override;
 	void Tick(float deltaTime) override;
+	UTankAimingComponent* GetAimingComponent();
 	
 };

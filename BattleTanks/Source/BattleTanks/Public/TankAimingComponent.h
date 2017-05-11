@@ -8,6 +8,7 @@
 //Forward declarations
 class UTankBarrel;
 class UTankTurret;
+class AProjectile;
 
 //Enum
 
@@ -33,14 +34,15 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 
-	void SetBarrelReference(UTankBarrel*);
-
-	void SetTurretReference(UTankTurret*);
-
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void AimAt(FVector, float);
+	//Allows the blueprint to call this method
+	UFUNCTION(BlueprintCallable, Category = "Input")
+		void Fire();
+
+	UFUNCTION(BlueprintCallable, Category = "Input")
+		void AimAt(FVector hitLocation);
 
 protected:
 	// Called when the game starts
@@ -51,8 +53,29 @@ protected:
 
 private:
 
+	/* Blueprint Variables*/
+
+	UPROPERTY(EditAnywhere, Category = "Setup")
+		TSubclassOf<AProjectile> projectileBP = NULL;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		float launchSpeed = 2500;
+
+	//Gun reload time in seconds
+	UPROPERTY(EditAnywhere, Category = "Firing")
+		float reloadTime = 3;
+
+	/* Non-Blueprint Variables*/
+
+	double lastFireTime = 0;
+
 	UTankBarrel* barrel = NULL;
 	UTankTurret* turret = NULL;
+
+	/* Functions */
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent);
 
 	void MoveBarrel(FVector);
 		
