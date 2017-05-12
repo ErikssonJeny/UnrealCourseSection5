@@ -17,7 +17,8 @@ enum class EFiringStatus : uint8
 {
 	Reloading,
 	Aiming,
-	Locked
+	Locked,
+	NoAmmo
 };
 
 //Holds parameters & properties for barrels & turrets
@@ -31,8 +32,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Input")
 		void Initialise(UTankBarrel* setBarrel, UTankTurret* setTurret);
 
+	FVector aimDirection;
+
 	// Sets default values for this component's properties
 	UTankAimingComponent();
+
+	EFiringStatus GetFiringStatus() const;
 
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -44,6 +49,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Input")
 		void AimAt(FVector hitLocation);
 
+	UFUNCTION(BlueprintCallable, Category = "Ammo")
+		int32 GetAmmoCount() const;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		int32 ammoCount = 2;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -51,12 +62,12 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 		EFiringStatus firingStatus = EFiringStatus::Aiming;
 
+	UPROPERTY(EditAnywhere, Category = "Setup")
+		TSubclassOf<AProjectile> projectileBP = NULL;
+
 private:
 
 	/* Blueprint Variables*/
-
-	UPROPERTY(EditAnywhere, Category = "Setup")
-		TSubclassOf<AProjectile> projectileBP = NULL;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		float launchSpeed = 2500;
@@ -74,9 +85,7 @@ private:
 
 	/* Functions */
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent);
-
+	bool IsBarrelMoving();
 	void MoveBarrel(FVector);
 		
 };

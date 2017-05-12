@@ -19,12 +19,16 @@ class BATTLETANKS_API ATankAIController : public AAIController
 	
 public:
 
+protected:
+
+	UPROPERTY(EditDefaultsOnly, Category = "Pathfinding")
+		float acceptanceRadius = 50.f;
+
 private:
 
 	ATank* playerTank = NULL;
+	UTankAimingComponent* aimingComponent = NULL;
 
-	UPROPERTY(EditDefaultsOnly, Category = Pathfinding)
-		float acceptanceRadius = 50.f;
 
 	void BeginPlay() override;
 	void Tick(float deltaTime) override;

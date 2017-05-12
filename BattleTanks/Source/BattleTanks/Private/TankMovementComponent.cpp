@@ -15,8 +15,6 @@ void UTankMovementComponent::Initialise(UTankTrack* setLeftTrack, UTankTrack* se
 
 void UTankMovementComponent::MoveForward(float inputThrow)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Forward throttle: %f"), inputThrow);
-
 	if (!ensure(leftTrack || rightTrack))
 		return;
 
@@ -26,8 +24,6 @@ void UTankMovementComponent::MoveForward(float inputThrow)
 
 void UTankMovementComponent::MoveBackward(float inputThrow)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Backward throttle: %f"), inputThrow);
-
 	if (!ensure(leftTrack || rightTrack))
 		return;
 
@@ -37,8 +33,6 @@ void UTankMovementComponent::MoveBackward(float inputThrow)
 
 void UTankMovementComponent::TurnLeft(float inputThrow)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Left throttle: %f, %f"), -inputThrow, inputThrow);
-
 	if (!ensure(leftTrack || rightTrack))
 		return;
 
@@ -48,8 +42,6 @@ void UTankMovementComponent::TurnLeft(float inputThrow)
 
 void UTankMovementComponent::TurnRight(float inputThrow)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Right throttle: %f, %f"), inputThrow, -inputThrow);
-
 	if (!ensure(leftTrack || rightTrack))
 		return;
 
@@ -64,8 +56,6 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 
 	MoveForward(FVector::DotProduct(moveForwardAI, tankForward));
 	TurnRight(FVector::CrossProduct(moveForwardAI, tankForward).Z);
-
-	UE_LOG(LogTemp, Warning, TEXT("%s velocity: %s"), *(GetOwner()->GetName()), *moveForwardAI.ToString());
 }
 
 

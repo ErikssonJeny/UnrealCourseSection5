@@ -33,6 +33,23 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	if (ammoCount <= 0)
+	{
+		firingStatus = EFiringStatus::NoAmmo;
+	}
+	else if ((FPlatformTime::Seconds() - lastFireTime) < reloadTime)
+	{
+		firingStatus = EFiringStatus::Reloading;
+	}
+	else if (IsBarrelMoving())
+	{
+		firingStatus = EFiringStatus::Aiming;
+	}
+	else
+	{
+		firingStatus = EFiringStatus::Locked;
+	}
+
 	// ...
 }
 
@@ -42,45 +59,44 @@ void UTankAimingComponent::Initialise(UTankBarrel* setBarrel, UTankTurret* setTu
 	turret = setTurret;
 }
 
-// Called to bind functionality to input
-void UTankAimingComponent::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-
-}
-
 void UTankAimingComponent::Fire()
 {
-	bool isReloaded = (FPlatformTime::Seconds() - lastFireTime) > reloadTime;
 
 	if (!ensure(barrel))
 		return;
 
-	if (isReloaded)
+	if (firingStatus == EFiringStatus::NoAmmo)
+		return;
+
+	if (firingStatus != EFiringStatus::Reloading)
 	{
 		AProjectile* projectile = GetWorld()->SpawnActor<AProjectile>(projectileBP, barrel->GetSocketLocation(FName("launchLocation")), barrel->GetSocketRotation(FName("launchLocation")));
 		projectile->LaunchProjectile(launchSpeed);
 		lastFireTime = FPlatformTime::Seconds();
+		ammoCount--;
 	}
+}
+
+int32 UTankAimingComponent::GetAmmoCount() const
+{
+	return ammoCount;
 }
 
 void UTankAimingComponent::AimAt(FVector hitLocation)
 {
 	if (!ensure(barrel))
 	{
-		UE_LOG(LogClass, Error, TEXT("No barrel."));
 		return;
 	}
 		
 
 	if (!ensure(turret))
 	{
-		UE_LOG(LogClass, Error, TEXT("No turret."));
 		return;
 	}
 
 	FVector outLaunchVelocity; 
 	FVector startLocation = barrel->GetSocketLocation(FName("launchLocation"));
-	FVector aimDirection;
 
 
 	if (UGameplayStatics::SuggestProjectileVelocity(this, outLaunchVelocity, startLocation, hitLocation, launchSpeed, false, 0.0f, 0.0f, ESuggestProjVelocityTraceOption::DoNotTrace))
@@ -95,17 +111,34 @@ void UTankAimingComponent::AimAt(FVector hitLocation)
 	return;
 }
 
-void UTankAimingComponent::MoveBarrel(FVector aimDirection)
+void UTankAimingComponent::MoveBarrel(FVector newAimDirection)
 {
 	if (!ensure (barrel || turret))
 		return;
 
 	FRotator barrelRotation = barrel->GetForwardVector().Rotation();
-	FRotator aimRotation = aimDirection.Rotation();
+	FRotator aimRotation = newAimDirection.Rotation();
 	FRotator deltaRotation = aimRotation - barrelRotation;
 
 	barrel->Elevate(deltaRotation.Pitch);
-	turret->Rotate(deltaRotation.Yaw);
+	
+	if (deltaRotation.Yaw < 180)
+		turret->Rotate(deltaRotation.Yaw);
+	else
+		turret->Rotate(-deltaRotation.Yaw);
+}
+
+bool UTankAimingComponent::IsBarrelMoving()
+{
+	if (!ensure(barrel))
+		return false;
+
+	return !barrel->GetForwardVector().Equals(aimDirection, 0.01f);
+}
+
+EFiringStatus UTankAimingComponent::GetFiringStatus() const
+{
+	return firingStatus;
 }
 
 
