@@ -22,7 +22,16 @@ protected:
 private:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	UProjectileMovementComponent* projectileMovementComponent = NULL;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UProjectileMovementComponent* projectileMovementComponent = NULL;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UStaticMeshComponent* projectileCollisionMesh = NULL;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UParticleSystemComponent* projectileLaunchBlast = NULL;
+
 
 
 	
