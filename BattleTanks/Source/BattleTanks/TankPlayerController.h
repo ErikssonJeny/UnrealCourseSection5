@@ -26,6 +26,8 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 		float range = 10.0;
 
+	void SetPawn(APawn* InPawn);
+
 	void BeginPlay() override;
 	void Tick(float DeltaTime) override;
 
@@ -38,6 +40,10 @@ public:
 	bool GetLookVectorHitLocation(FVector, FVector&) const;
 
 protected:
+
+
+	UFUNCTION()
+		void OnTankDeath();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 		void FindAimingComponent(UTankAimingComponent* aimingComponent);

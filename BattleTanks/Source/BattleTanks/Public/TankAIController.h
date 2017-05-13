@@ -19,6 +19,7 @@ class BATTLETANKS_API ATankAIController : public AAIController
 	
 public:
 
+
 protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Pathfinding")
@@ -26,8 +27,14 @@ protected:
 
 private:
 
+
+	UFUNCTION()
+		void OnTankDeath();
+
 	ATank* playerTank = NULL;
 	UTankAimingComponent* aimingComponent = NULL;
+
+	virtual void SetPawn(APawn* InPawn) override;
 
 
 	void BeginPlay() override;

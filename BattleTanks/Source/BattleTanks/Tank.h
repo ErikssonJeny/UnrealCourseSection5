@@ -8,6 +8,8 @@
 //Forward declarations
 class UTankMovementComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDelegate);
+
 UCLASS()
 class BATTLETANKS_API ATank : public APawn
 {
@@ -17,15 +19,28 @@ public:
 	// Sets default values for this pawn's properties
 	ATank();
 
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser) override;
+
+	UFUNCTION(BlueprintPure, Category = "Health")
+	float GetHealthPercent() const;
+
 	UPROPERTY(BlueprintReadOnly, Category = "Setup")
 		UTankMovementComponent* tankMovementComponent = NULL;
+
+	FTankDelegate OnDeath;
 
 protected:
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+
 private:	
 
+	UPROPERTY(EditDefaultsOnly, Category = "Health")
+		int32 startingHealth = 100;
+
+	UPROPERTY(VisibleAnywhere, Category = "Health")
+		int32 currentHealth = 100;
 	
 };

@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTanks.h"
+#include "Tank.h"
 #include "../Public/TankAimingComponent.h"
 #include "TankPlayerController.h"
 
@@ -30,6 +31,29 @@ void ATankPlayerController::AimTowardsCrosshair()
 	{
 		GetAimingComponent()->AimAt(hitLocation);
 	}
+}
+
+void ATankPlayerController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+
+	if (InPawn)
+	{
+		auto possessedTank = Cast<ATank>(InPawn);
+
+		if (!ensure(possessedTank))
+		{
+			return;
+		}
+
+		possessedTank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnTankDeath);
+	}
+}
+
+void ATankPlayerController::OnTankDeath()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Tank death."));
+	StartSpectatingOnly();
 }
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector &outHitLocation) const
@@ -64,7 +88,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector direction, FVector 
 	FCollisionQueryParams CollisionParams;
 	CollisionParams.AddIgnoredActor(GetPawn());
 
-	if (GetWorld()->LineTraceSingleByChannel(objectHit, startLocation, endLocation, ECollisionChannel::ECC_Visibility, CollisionParams))
+	if (GetWorld()->LineTraceSingleByChannel(objectHit, startLocation, endLocation, ECollisionChannel::ECC_Camera, CollisionParams))
 	{
 		outHitLocation = objectHit.Location;
 		return true;

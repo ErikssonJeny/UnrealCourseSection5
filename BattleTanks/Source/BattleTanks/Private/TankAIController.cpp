@@ -12,6 +12,34 @@ void ATankAIController::BeginPlay()
 	aimingComponent = GetAimingComponent();
 }
 
+void ATankAIController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+
+	if (InPawn)
+	{
+		auto possessedTank = Cast<ATank>(InPawn);
+
+		if (!ensure(possessedTank))
+		{
+			return;
+		}
+
+		possessedTank->OnDeath.AddUniqueDynamic(this, &ATankAIController::OnTankDeath);
+	}
+}
+
+void ATankAIController::OnTankDeath()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Tank death."));
+
+	if (!GetPawn())
+		return;
+
+	GetPawn()->DetachFromControllerPendingDestroy();
+	Destroy();
+}
+
 void ATankAIController::Tick(float deltaTime)
 {
 	Super::Tick(deltaTime);
