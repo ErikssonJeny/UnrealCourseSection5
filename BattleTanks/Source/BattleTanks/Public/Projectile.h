@@ -20,8 +20,6 @@ protected:
 	virtual void BeginPlay() override;
 
 private:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UProjectileMovementComponent* projectileMovementComponent = NULL;
@@ -31,6 +29,15 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UParticleSystemComponent* projectileLaunchBlast = NULL;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UParticleSystemComponent* projectileImpactBlast = NULL;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		URadialForceComponent* projectileExplosionForce = NULL;
+
+	UFUNCTION()
+		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 
 
 
