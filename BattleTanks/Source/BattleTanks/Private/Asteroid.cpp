@@ -93,7 +93,6 @@ void AAsteroid::OnAsteroidScore()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("Score."));
 
-	OnScore.Broadcast();
 	OnAsteroidDeath();
 }
 
