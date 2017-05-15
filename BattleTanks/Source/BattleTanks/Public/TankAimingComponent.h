@@ -72,6 +72,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		float launchSpeed = 2500;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		float proposedSpeed = 2500;
+
 	//Gun reload time in seconds
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		float reloadTime = 3;

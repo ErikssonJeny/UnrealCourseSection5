@@ -4,6 +4,7 @@
 #include "../Public/TankBarrel.h"
 #include "../Public/TankTurret.h"
 #include "../Public/Projectile.h"
+#include "../Public/ProjectileLaser.h"
 #include "../Public/TankAimingComponent.h"
 
 
@@ -33,7 +34,7 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (ammoCount <= 0)
+	if (ammoCount == 0)
 	{
 		firingStatus = EFiringStatus::NoAmmo;
 	}
@@ -73,7 +74,9 @@ void UTankAimingComponent::Fire()
 		AProjectile* projectile = GetWorld()->SpawnActor<AProjectile>(projectileBP, barrel->GetSocketLocation(FName("launchLocation")), barrel->GetSocketRotation(FName("launchLocation")));
 		projectile->LaunchProjectile(launchSpeed);
 		lastFireTime = FPlatformTime::Seconds();
-		ammoCount--;
+
+		if(ammoCount != -1) //-1 is infinite ammo
+			ammoCount--;
 	}
 }
 

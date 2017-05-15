@@ -22,7 +22,7 @@ public:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser) override;
 
 	UFUNCTION(BlueprintPure, Category = "Health")
-	float GetHealthPercent() const;
+		float GetHealthPercent() const;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Setup")
 		UTankMovementComponent* tankMovementComponent = NULL;
