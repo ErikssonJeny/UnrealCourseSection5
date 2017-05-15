@@ -93,14 +93,14 @@ void AAsteroid::OnAsteroidScore()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("Score."));
 
-	OnAsteroidDeath();
+	OnDeath.Broadcast();
 }
 
 void AAsteroid::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
 	//UE_LOG(LogClass, Warning, TEXT("Hit."));
 
-	OnAsteroidScore();
+	OnScore.Broadcast();
 }
 
 float AAsteroid::GetHealthPercent() const
