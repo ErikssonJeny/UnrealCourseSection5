@@ -71,7 +71,7 @@ void UTankAimingComponent::Fire()
 
 	if (firingStatus != EFiringStatus::Reloading)
 	{
-		AProjectile* projectile = GetWorld()->SpawnActor<AProjectile>(projectileBP, barrel->GetSocketLocation(FName("launchLocation")), barrel->GetSocketRotation(FName("launchLocation")));
+		AProjectileLaser* projectile = GetWorld()->SpawnActor<AProjectileLaser>(projectileBP, barrel->GetSocketLocation(FName("launchLocation")), barrel->GetSocketRotation(FName("launchLocation")));
 		projectile->LaunchProjectile(launchSpeed);
 		lastFireTime = FPlatformTime::Seconds();
 

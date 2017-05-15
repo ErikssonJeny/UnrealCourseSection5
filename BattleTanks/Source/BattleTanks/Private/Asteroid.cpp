@@ -40,9 +40,8 @@ void AAsteroid::BeginPlay()
 
 	//UE_LOG(LogClass, Warning, TEXT("Setup Health: %i"), currentHealth);
 	
-	asteroidMovementComponent->SetVelocityInLocalSpace(GetRootComponent()->GetForwardVector() * -initialVelocity);
+	
 	asteroidMovementComponent->ProjectileGravityScale = 0;
-	asteroidMovementComponent->Activate();
 }
 
 // Called every frame
@@ -81,6 +80,7 @@ void AAsteroid::OnAsteroidDeath()
 
 	asteroidImpactBlast->Activate();
 	asteroidCollisionMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	asteroidCollisionMesh->MoveIgnoreActors.Add(this); //Ignores collision with same actor
 	asteroidCollisionMesh->SetVisibility(false, true);
 	bCanDie = true;
 
@@ -91,8 +91,9 @@ void AAsteroid::OnAsteroidDeath()
 
 void AAsteroid::OnAsteroidScore()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Score."));
+	//UE_LOG(LogTemp, Warning, TEXT("Score."));
 
+	OnScore.Broadcast();
 	OnAsteroidDeath();
 }
 
@@ -109,3 +110,14 @@ float AAsteroid::GetHealthPercent() const
 	return (float)currentHealth / (float)startingHealth;
 }
 
+void AAsteroid::LaunchAsteroid(float launchSpeed)
+{
+	asteroidMovementComponent->SetVelocityInLocalSpace(GetRootComponent()->GetForwardVector() * -initialVelocity * launchSpeed);
+	asteroidMovementComponent->Activate();
+}
+
+void AAsteroid::LaunchAsteroidInDirection(float launchSpeed, FVector direction)
+{
+	asteroidMovementComponent->SetVelocityInLocalSpace(direction * initialVelocity * launchSpeed);
+	asteroidMovementComponent->Activate();
+}

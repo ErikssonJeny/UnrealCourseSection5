@@ -8,7 +8,7 @@
 //Forward declarations
 class UTankBarrel;
 class UTankTurret;
-class AProjectile;
+class AProjectileLaser;
 
 //Enum
 
@@ -63,7 +63,7 @@ protected:
 		EFiringStatus firingStatus = EFiringStatus::Aiming;
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
-		TSubclassOf<AProjectile> projectileBP = NULL;
+		TSubclassOf<AProjectileLaser> projectileBP = NULL;
 
 private:
 

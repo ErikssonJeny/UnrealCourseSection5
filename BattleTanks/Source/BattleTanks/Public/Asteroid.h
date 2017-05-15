@@ -24,6 +24,12 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Health")
 		float GetHealthPercent() const;
 
+	UFUNCTION(BlueprintCallable, Category = "Asteroid")
+		void LaunchAsteroid(float launchSpeed);
+
+	UFUNCTION(BlueprintCallable, Category = "Asteroid")
+		void LaunchAsteroidInDirection(float launchSpeed, FVector direction);
+
 	UFUNCTION()
 		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 
@@ -35,6 +41,7 @@ public:
 
 	UFUNCTION()
 		void OnAsteroidScore();
+
 
 	FAsteroidDelegate OnDeath;
 	FAsteroidDelegate OnScore;
@@ -58,6 +65,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Health")
 		int32 currentHealth = 100;
+
+	UPROPERTY(VisibleAnywhere, Category = "Score")
+		int32 damageDealt = 100;
 
 	float timeOfDeath;
 
