@@ -94,7 +94,8 @@ void AAsteroid::OnAsteroidScore()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("Score."));
 
-	OnDeath.Broadcast();
+	asteroidImpactBlast->Activate();
+	Destroy();
 }
 
 void AAsteroid::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)

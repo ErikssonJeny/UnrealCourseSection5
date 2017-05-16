@@ -30,6 +30,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Score")
 		int32 GetScoreCount() const;
 
+	UFUNCTION(BlueprintCallable, Category = "Score")
+		int32 GetPointsCount() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Score")
+		int32 GetLevelNumber() const;
+
 	UPROPERTY(EditAnywhere, Category = "Setup")
 		TSubclassOf<AAsteroid> asteroidBP = NULL;
 
@@ -42,8 +48,14 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Lose")
 		FFactoryDelegate OnPlayerLose;
 
+	UPROPERTY(BlueprintAssignable, Category = "Achievement")
+		FFactoryDelegate OnPlayerAchievement;
+
 	UFUNCTION(BlueprintCallable, Category = "Lose")
 		void OnLose();
+
+	UFUNCTION(BlueprintCallable, Category = "Lose")
+		void OnAchievement();
 
 
 
@@ -54,33 +66,47 @@ protected:
 private:
 
 	//In seconds
-	UPROPERTY(EditAnywhere, Category = "Setup")
-		double respawnDelay = 1.0f;
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		double respawnDelay = 3.5f;
 
-	UPROPERTY(EditAnywhere, Category = "Setup")
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		float minimumSpeed = 0.5f;
 
-	UPROPERTY(EditAnywhere, Category = "Setup")
-		float maximumSpeed = 3.5f;
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		float maximumSpeed = 2.0f;
 
-	UPROPERTY(EditAnywhere, Category = "Setup")
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		float minimumHealth = 0.5f;
 
-	UPROPERTY(EditAnywhere, Category = "Setup")
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		float maximumHealth = 3.5f;
 
-	UPROPERTY(EditAnywhere, Category = "Setup")
-		int32 maxAsteroidCount = 30;
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		int32 maxAsteroidCount = 10;
 
-	UPROPERTY(EditAnywhere, Category = "Setup")
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		int32 asteroidCount = 0;
 
-	UPROPERTY(VisibleAnywhere, Category = "Setup")
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		int32 asteroidDeaths = 0;
+
+	UPROPERTY(VisibleAnywhere, Category = "Score")
 		int32 pointsCount = 0;
 
-	UPROPERTY(EditAnywhere, Category = "Score")
+	UPROPERTY(VisibleAnywhere, Category = "Score")
+		int32 levelNumber = 1;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Score")
 		int32 scoreCount = 10;
 
+	void SetTickTrue();
+
 	double lastSpawn = 0;
+
+	int32 globalAsteroidDeaths = 0;
+
+	bool bHasLost = false;
+
+	void AdvanceLevel();
 
 };
