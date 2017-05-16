@@ -36,6 +36,12 @@ private:
 		UParticleSystemComponent* projLasImpactBlast = NULL;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UAudioComponent* projLasLaunchSound = NULL;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UAudioComponent* projLasImpactSound = NULL;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
 		URadialForceComponent* projLasExplosionForce = NULL;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Timer")

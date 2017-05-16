@@ -11,6 +11,14 @@ AProjectileLaser::AProjectileLaser()
 	projLasMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Movement Component"));
 	projLasMovementComponent->bAutoActivate = false;
 
+	projLasLaunchSound = CreateDefaultSubobject<UAudioComponent>(FName("Launch Sound"));
+	projLasLaunchSound->bAutoActivate = false;
+	projLasLaunchSound->bStopWhenOwnerDestroyed = false;
+
+	projLasImpactSound = CreateDefaultSubobject<UAudioComponent>(FName("Impact Sound"));
+	projLasImpactSound->bAutoActivate = false;
+	projLasImpactSound->bStopWhenOwnerDestroyed = false;
+
 	projLasCollisionMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Collision Mesh Component"));
 	SetRootComponent(projLasCollisionMesh);
 	projLasCollisionMesh->SetNotifyRigidBodyCollision(true);
@@ -41,6 +49,7 @@ void AProjectileLaser::OnOverlap(AActor* MyOverlappedActor, AActor* OtherActor)
 
 	projLasLaunchBlast->Deactivate();
 	projLasImpactBlast->Activate();
+	projLasImpactSound->Activate();
 	projLasExplosionForce->FireImpulse();
 
 	SetRootComponent(projLasImpactBlast);
@@ -59,6 +68,7 @@ void AProjectileLaser::LaunchProjectile(float speed)
 
 	projLasMovementComponent->SetVelocityInLocalSpace(FVector::ForwardVector * speed);
 	projLasMovementComponent->Activate();
+	projLasLaunchSound->Activate();
 }
 
 void AProjectileLaser::OnTimerExpire()

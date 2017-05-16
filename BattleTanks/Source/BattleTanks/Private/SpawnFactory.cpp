@@ -46,6 +46,7 @@ void USpawnFactory::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 			AAsteroid* asteroid = GetWorld()->SpawnActor<AAsteroid>(asteroidBP, startLocations[start], FRotator(0, 0, 0));
 			asteroid->LaunchAsteroidInDirection(FMath::RandRange(0.5f, 3.5f), direction);
 			asteroid->OnDeath.AddUniqueDynamic(this, &USpawnFactory::OnAsteroidDeath);
+			asteroid->OnScore.AddUniqueDynamic(this, &USpawnFactory::OnAsteroidScore);
 			asteroidCount++;
 
 			lastSpawn = FPlatformTime::Seconds();
