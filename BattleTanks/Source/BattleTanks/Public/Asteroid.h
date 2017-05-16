@@ -42,7 +42,6 @@ public:
 	UFUNCTION()
 		void OnAsteroidScore();
 
-
 	FAsteroidDelegate OnDeath;
 	FAsteroidDelegate OnScore;
 
@@ -69,11 +68,11 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Score")
 		int32 damageDealt = 100;
 
-	float timeOfDeath;
+	/*float timeOfDeath;
 
 	bool bCanDie = false;
 
-	float destroyDelay = 1;
+	float destroyDelay = 1;*/
 
 	
 	

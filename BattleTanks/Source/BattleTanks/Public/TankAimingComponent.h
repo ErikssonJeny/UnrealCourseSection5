@@ -52,7 +52,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Ammo")
 		int32 GetAmmoCount() const;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	UPROPERTY(EditDefaultsOnly, Category = "Ammo")
 		int32 ammoCount = 2;
 
 protected:

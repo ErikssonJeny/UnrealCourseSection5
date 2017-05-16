@@ -50,9 +50,9 @@ void AAsteroid::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	//UE_LOG(LogClass, Warning, TEXT("Location: %s"), *(GetRootComponent()->GetComponentLocation().ToString()));
 
-	if(bCanDie)
+	/*if(bCanDie)
 		if (FPlatformTime::Seconds() >= (timeOfDeath + destroyDelay))
-			this->Destroy();
+			this->Destroy();*/
 
 	if (GetActorLocation().Y < -270.0f)
 		OnScore.Broadcast();
@@ -79,12 +79,13 @@ void AAsteroid::OnAsteroidDeath()
 	//UE_LOG(LogTemp, Warning, TEXT("Death."));
 
 	asteroidImpactBlast->Activate();
-	asteroidCollisionMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Destroy();
+	/*asteroidCollisionMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	asteroidCollisionMesh->MoveIgnoreActors.Add(this); //Ignores collision with same actor
 	asteroidCollisionMesh->SetVisibility(false, true);
 	bCanDie = true;
 
-	timeOfDeath = FPlatformTime::Seconds();
+	timeOfDeath = FPlatformTime::Seconds();*/
 
 	//this->SetActorTickEnabled(true);
 }
