@@ -56,7 +56,6 @@ void USpawnFactory::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 void USpawnFactory::OnLose()
 {
 	GetWorld()->GetFirstPlayerController()->StartSpectatingOnly();
-	UGameplayStatics::SetGamePaused(GetWorld(), true);
 }
 
 void USpawnFactory::OnAsteroidDeath()
